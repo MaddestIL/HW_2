@@ -1,14 +1,13 @@
 package com.example.hw_2
 
-import android.graphics.drawable.Icon
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,18 +19,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
-import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -50,41 +43,52 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.lifecycle.viewmodel.viewModelFactory
 import coil.compose.AsyncImage
 import kotlinx.coroutines.launch
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.res.painterResource
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.lifecycle.lifecycleScope
-import com.example.hw_2.domain.usecases.AppEntryUseCases
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.hw_2.presentation.nvgraph.NavGraph
 import com.example.hw_2.presentation.oboarding.OnBoardingScreen
 import com.example.hw_2.presentation.oboarding.OnBoardingViewModel
 import com.example.hw_2.ui.theme.HW_2Theme
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @Inject
-    lateinit var appEntryUseCases: AppEntryUseCases
 
-
+    val viewModel by viewModels<MainViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        installSplashScreen()
-        lifecycleScope.launch {
-            appEntryUseCases.readAppEntry().collect{
-                Log.d("Test",it.toString())
+        installSplashScreen().apply{
+            setKeepOnScreenCondition{
+                viewModel.splashCondition
             }
-
         }
+
         setContent {
             HW_2Theme {
+
+                val isSystemInDarkMode = isSystemInDarkTheme()
+                val systemControll = rememberSystemUiController()
+
+                SideEffect{
+                    systemControll.setNavigationBarColor(
+                        color = Color.Transparent,
+                        darkIcons = !isSystemInDarkMode
+                    )
+
+                }
                 Box(modifier = Modifier.background(color = MaterialTheme.colorScheme.background)) {
-                    val viewModel: OnBoardingViewModel by viewModels()
+
+                    val startDestination = viewModel.startDestination
+                    NavGraph(startDestination = startDestination )
+                    val viewModel: OnBoardingViewModel = hiltViewModel()
                     OnBoardingScreen(
                         event = viewModel::onEvent
                     )
