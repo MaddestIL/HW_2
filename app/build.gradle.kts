@@ -70,6 +70,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
     implementation("io.coil-kt:coil-compose:2.5.0")
+    implementation ("androidx.paging:paging-compose:3.3.0-alpha02")
     implementation ("io.coil-kt:coil:2.2.2")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
