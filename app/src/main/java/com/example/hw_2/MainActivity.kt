@@ -1,5 +1,6 @@
 package com.example.hw_2
 
+import android.graphics.drawable.Icon
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
@@ -22,8 +23,12 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -47,6 +52,9 @@ import coil.compose.AsyncImage
 import kotlinx.coroutines.launch
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
+import androidx.compose.material3.Icon
+import androidx.compose.ui.res.painterResource
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 
 class MainActivity : ComponentActivity() {
 
@@ -54,7 +62,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        installSplashScreen()
         setContent {
             PhotoScreen( )
 
@@ -135,6 +143,7 @@ fun PhotoCard(
     backHandle: () -> Unit = {},
     isFull: Boolean = false
 ) {
+    var isFavorite by remember { mutableStateOf(false) }
     BackHandler {
         backHandle()
     }
@@ -186,5 +195,14 @@ fun PhotoCard(
             )
 
         }
+        IconToggleButton(
+            checked = false,
+            onCheckedChange = {
+                isFavorite =!isFavorite
+            }
+            ){
+                Icon(painter = painterResource(R.drawable.ic_launcher_foreground), contentDescription = "" )
+
+             }
     }
 }
