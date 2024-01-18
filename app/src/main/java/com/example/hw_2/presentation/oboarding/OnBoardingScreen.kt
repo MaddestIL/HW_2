@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.example.hw_2.PhotoScreen
 import com.example.hw_2.presentation.Dimens.MediumPadding2
 import com.example.hw_2.presentation.Dimens.PageIndicatorWidth
 import com.example.hw_2.presentation.common.HWButton
