@@ -2,6 +2,7 @@ package com.example.hw_2
 
 import android.graphics.drawable.Icon
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
@@ -57,16 +58,27 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.res.painterResource
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.lifecycleScope
+import com.example.hw_2.domain.usecases.AppEntryUseCases
 import com.example.hw_2.presentation.oboarding.OnBoardingScreen
 import com.example.hw_2.ui.theme.HW_2Theme
-
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
+    @Inject
+    lateinit var appEntryUseCases: AppEntryUseCases
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
+        lifecycleScope.launch {
+            appEntryUseCases.readAppEntry().collect{
+                Log.d("Test",it.toString())
+            }
+
+        }
         setContent {
             HW_2Theme {
                 Box(modifier = Modifier.background(color = MaterialTheme.colorScheme.background)) {
