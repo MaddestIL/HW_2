@@ -8,6 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -53,8 +54,11 @@ import kotlinx.coroutines.launch
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.res.painterResource
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.example.hw_2.presentation.oboarding.OnBoardingScreen
+import com.example.hw_2.ui.theme.HW_2Theme
 
 class MainActivity : ComponentActivity() {
 
@@ -64,7 +68,12 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         installSplashScreen()
         setContent {
-            PhotoScreen( )
+            HW_2Theme {
+                Box(modifier = Modifier.background(color = MaterialTheme.colorScheme.background)) {
+                    OnBoardingScreen()
+                }
+            }
+
 
         }
 
