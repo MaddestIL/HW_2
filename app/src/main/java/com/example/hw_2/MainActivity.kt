@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -61,6 +62,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import com.example.hw_2.domain.usecases.AppEntryUseCases
 import com.example.hw_2.presentation.oboarding.OnBoardingScreen
+import com.example.hw_2.presentation.oboarding.OnBoardingViewModel
 import com.example.hw_2.ui.theme.HW_2Theme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -82,7 +84,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             HW_2Theme {
                 Box(modifier = Modifier.background(color = MaterialTheme.colorScheme.background)) {
-                    OnBoardingScreen()
+                    val viewModel: OnBoardingViewModel by viewModels()
+                    OnBoardingScreen(
+                        event = viewModel::onEvent
+                    )
                 }
             }
 
